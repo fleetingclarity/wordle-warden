@@ -26,19 +26,11 @@ jobs:
       # Build and push 'latest' image for main branch
       - name: Build and push Docker image (latest)
         if: github.ref == 'refs/heads/main'
-        uses: docker/build-push-action@v4
-        with:
-          push: true
-          tags: fleetingclarity/wordle-warden:latest
-          build-args: |
-            --builder paketobuildpacks/builder:base
+        run: |
+          pack build fleetingclarity/wordle-warden:latest --builder paketobuildpacks/builder:base --publish
 
       # Build and push versioned image for tags
       - name: Build and push Docker image (tagged)
         if: startsWith(github.ref, 'refs/tags/v')
-        uses: docker/build-push-action@v4
-        with:
-          push: true
-          tags: fleetingclarity/wordle-warden:${{ github.ref_name }}
-          build-args: |
-            --builder paketobuildpacks/builder:base
+        run: |
+          pack build fleetingclarity/wordle-warden:${{ github.ref_name }} --builder paketobuildpacks/builder:base --publish
