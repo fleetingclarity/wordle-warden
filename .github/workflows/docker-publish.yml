@@ -24,7 +24,7 @@ jobs:
           chmod +x pack
           sudo mv pack /usr/local/bin/pack
           echo "Pack installed at: $(which pack)"
-          pack --version
+          /usr/local/bin/pack --version
 
       # Log in to Docker Hub
       - name: Log in to Docker Hub
@@ -37,10 +37,10 @@ jobs:
       - name: Build and push Docker image (latest)
         if: github.ref == 'refs/heads/main'
         run: |
-          pack build fleetingclarity/wordle-warden:latest --builder paketobuildpacks/builder:base --publish
+          /usr/local/bin/pack build fleetingclarity/wordle-warden:latest --builder paketobuildpacks/builder:base --publish
 
       # Build and push versioned image for tags
       - name: Build and push Docker image (tagged)
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
-          pack build fleetingclarity/wordle-warden:${{ github.ref_name }} --builder paketobuildpacks/builder:base --publish
+          /usr/local/bin/pack build fleetingclarity/wordle-warden:${{ github.ref_name }} --builder paketobuildpacks/builder:base --publish
