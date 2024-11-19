@@ -19,8 +19,11 @@ jobs:
       # Install pack CLI
       - name: Install pack CLI
         run: |
-          curl -sSL "https://github.com/buildpacks/pack/releases/latest/download/pack-linux-amd64" -o /usr/local/bin/pack
-          chmod +x /usr/local/bin/pack
+          echo "Installing pack CLI..."
+          curl -sSL "https://github.com/buildpacks/pack/releases/latest/download/pack-linux-amd64" -o pack
+          chmod +x pack
+          sudo mv pack /usr/local/bin/pack
+          echo "Pack installed at: $(which pack)"
           pack --version
 
       # Log in to Docker Hub
