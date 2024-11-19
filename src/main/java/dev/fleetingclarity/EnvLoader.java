@@ -32,7 +32,7 @@ public class EnvLoader {
         }
 
         // Optionally print loaded variables for debugging
-        envVariables.forEach((key, value) -> log.debug("{}={}", key, value));
+        envVariables.forEach((key, value) -> log.trace("{}={}", key, value));
     }
 
     public static String getEnvOrProperty(final String key) {

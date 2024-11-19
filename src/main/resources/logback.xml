@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- Console Appender: Outputs logs to the console -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Root Logger: Sets the default logging level -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+    <!-- Jetty Logger: Configures logging level for Jetty -->
+    <logger name="org.eclipse.jetty" level="WARN"/>
+
+    <!-- Example for other loggers: Add custom log levels as needed -->
+    <logger name="dev.fleetingclarity" level="DEBUG"/>
+
+</configuration>
