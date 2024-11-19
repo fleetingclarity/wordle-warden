@@ -61,6 +61,7 @@
     <build>
         <plugins>
             <plugin>
+                <!-- Using configuration as shown at https://github.com/flyway/flyway/issues/3811#issuecomment-2006097976 -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.5.0</version>
