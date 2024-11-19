@@ -5,7 +5,7 @@ FROM eclipse-temurin:21-jdk-alpine
 WORKDIR /app
 
 # Copy the JAR file into the container
-COPY target/wordle-warden-1.0-SNAPSHOT-jar-with-dependencies.jar app.jar
+COPY target/wordle-warden-1.0-SNAPSHOT-shaded.jar app.jar
 
 # Expose the application port
 EXPOSE 8080
