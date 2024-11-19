@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: postgres_dev
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: your-password
+      POSTGRES_DB: app
+    ports:
+      - "5432:5432" # Exposes PostgreSQL on localhost:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Persists data locally
+volumes:
+  postgres_data:

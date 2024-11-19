@@ -1,0 +1,38 @@
+_metadata:
+  major_version: 2
+display_information:
+  name: Wordle Warden
+  description: A bot to keep track of wordle scores by user
+settings:
+  interactivity:
+    is_enabled: false
+  event_subscriptions:
+    # example request_url if using a cloudflared tunnel. The url must be registered manually in the slack app web console
+    request_url: https://broadband-florida-lounge-batch.trycloudflare.com/slack/verify
+    bot_events:
+      - message.channels
+      - message.groups
+      - app_mention
+  org_deploy_enabled: false
+  socket_mode_enabled: false
+  token_rotation_enabled: false
+features:
+  bot_user:
+    display_name: WordleWarden
+    always_online: false
+oauth_config:
+  scopes:
+    bot:
+      - app_mentions:read
+      - channels:history
+      - channels:join
+      - channels:read
+      - chat:write
+      - chat:write.public
+      - metadata.message:read
+      - users.profile:read
+      - im:history
+      - im:read
+      - groups:history
+      - groups:read
+      - users:read
