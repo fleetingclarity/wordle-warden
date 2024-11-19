@@ -8,7 +8,7 @@ on:
       - 'v*'
 
 jobs:
-  build-and-push:
+  build-and-publish:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,15 +16,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Install pack CLI
-      - name: Install pack CLI
-        run: |
-          echo "Installing pack CLI..."
-          curl -sSL "https://github.com/buildpacks/pack/releases/download/v0.35.1/pack-v0.35.1-linux.tgz" | tar -C /usr/local/bin/ --no-same-owner -xzv pack
-          echo "Pack installed at: $(which pack)"
-          /usr/local/bin/pack --version
-
-      # Log in to Docker Hub
+      # Set up Docker CLI
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
@@ -35,10 +27,12 @@ jobs:
       - name: Build and push Docker image (latest)
         if: github.ref == 'refs/heads/main'
         run: |
-          /usr/local/bin/pack build fleetingclarity/wordle-warden:latest --builder paketobuildpacks/builder:base --publish --env BP_JVM_VERSION=21
+          docker build -t fleetingclarity/wordle-warden:latest .
+          docker push fleetingclarity/wordle-warden:latest
 
       # Build and push versioned image for tags
       - name: Build and push Docker image (tagged)
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
-          /usr/local/bin/pack build fleetingclarity/wordle-warden:${{ github.ref_name }} --builder paketobuildpacks/builder:base --publish --env BP_JVM_VERSION=21
+          docker build -t fleetingclarity/wordle-warden:${{ github.ref_name }} .
+          docker push fleetingclarity/wordle-warden:${{ github.ref_name }}
