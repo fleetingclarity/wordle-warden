@@ -34,7 +34,7 @@ public class WordleWarden {
         slack.event(MessageEvent.class, (payload, ctx) -> {
             WordleScore score = parser.parse(payload.getEvent());
             //todo extract to service, duplicates logic in SlackChannelScanner
-            if (score != null && !dao.shouldSaveScore(score.getMessageId())) {
+            if (score != null && dao.shouldSaveScore(score)) {
                 score.setUsername(slackClient.getUsernameById(score.userId));
                 dao.saveScore(score);
             }

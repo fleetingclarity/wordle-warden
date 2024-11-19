@@ -37,7 +37,7 @@ public class SlackChannelScanner {
             List<Message> messages = slackClient.getAllChannelHistory(targetChannel.getId());
             for (Message message : messages) {
                 WordleScore score = parser.parse(message);
-                if (score != null && !dao.shouldSaveScore(score.getMessageId())) {
+                if (score != null && dao.shouldSaveScore(score)) {
                     score.setUsername(slackClient.getUsernameById(score.userId));
                     dao.saveScore(score);
                 }
