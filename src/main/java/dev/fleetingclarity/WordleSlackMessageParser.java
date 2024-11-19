@@ -38,6 +38,7 @@ public class WordleSlackMessageParser {
         message.setUser(messageEvent.getUser());
         message.setUsername("");
         message.setClientMsgId(messageEvent.getClientMsgId());
+        message.setTs(messageEvent.getTs());
         return parse(message);
     }
 
