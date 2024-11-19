@@ -16,6 +16,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Install pack CLI
+      - name: Install pack CLI
+        run: |
+          curl -sSL "https://github.com/buildpacks/pack/releases/latest/download/pack-linux-amd64" -o /usr/local/bin/pack
+          chmod +x /usr/local/bin/pack
+          pack --version
+
       # Log in to Docker Hub
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
