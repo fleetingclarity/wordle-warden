@@ -1,4 +1,4 @@
-package dev.fleetingclarity;
+package dev.fleetingclarity.wordlewarden;
 
 import org.flywaydb.core.Flyway;
 

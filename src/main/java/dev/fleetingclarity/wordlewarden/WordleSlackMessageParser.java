@@ -1,4 +1,4 @@
-package dev.fleetingclarity;
+package dev.fleetingclarity.wordlewarden;
 
 import com.slack.api.model.Message;
 import com.slack.api.model.event.MessageEvent;

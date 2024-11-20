@@ -1,4 +1,4 @@
-package dev.fleetingclarity;
+package dev.fleetingclarity.wordlewarden;
 
 import com.slack.api.bolt.App;
 import com.slack.api.bolt.jakarta_jetty.SlackAppServer;

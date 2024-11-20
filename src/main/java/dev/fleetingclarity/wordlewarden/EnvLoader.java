@@ -1,4 +1,4 @@
-package dev.fleetingclarity;
+package dev.fleetingclarity.wordlewarden;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

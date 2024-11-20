@@ -1,4 +1,4 @@
-package dev.fleetingclarity;
+package dev.fleetingclarity.wordlewarden;
 
 import com.slack.api.Slack;
 import com.slack.api.methods.SlackApiException;
