@@ -1,4 +1,4 @@
-package dev.fleetingclarity.wordlewarden;
+package dev.fleetingclarity.wordlewarden.scores;
 
 import com.slack.api.model.Conversation;
 import com.slack.api.model.ConversationType;
@@ -38,7 +38,7 @@ public class SlackChannelScanner {
             for (Message message : messages) {
                 WordleScore score = parser.parse(message);
                 if (score != null && dao.shouldSaveScore(score)) {
-                    score.setUsername(slackClient.getUsernameById(score.userId));
+                    slackClient.setScoreUsername(score);
                     dao.saveScore(score);
                 }
             }

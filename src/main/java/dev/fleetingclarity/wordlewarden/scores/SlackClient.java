@@ -1,4 +1,4 @@
-package dev.fleetingclarity.wordlewarden;
+package dev.fleetingclarity.wordlewarden.scores;
 
 import com.slack.api.Slack;
 import com.slack.api.methods.SlackApiException;
@@ -95,5 +95,19 @@ public class SlackClient {
             log.error("Error querying for userDetails of userId={}", userId, e);
         }
         return "";
+    }
+
+    public void setScoreUsername(final WordleScore score) {
+        try {
+            UsersInfoResponse res = slack.methods(botToken).usersInfo(req -> req.user(score.getUserId()));
+            if (res.isOk() && res.getUser() != null) {
+                score.setUsername(res.getUser().getRealName());
+            } else {
+                log.warn("Unable to find details of user '{}'", score.getUserId());
+                score.setUsername("");
+            }
+        } catch (IOException | SlackApiException e) {
+            log.error("Error querying for userDetails of userId={}", score.getUserId(), e);
+        }
     }
 }

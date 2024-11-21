@@ -1,4 +1,4 @@
-package dev.fleetingclarity.wordlewarden;
+package dev.fleetingclarity.wordlewarden.scores;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
