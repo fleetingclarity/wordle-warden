@@ -3,6 +3,8 @@ package dev.fleetingclarity.wordlewarden;
 import com.slack.api.bolt.App;
 import com.slack.api.bolt.jakarta_jetty.SlackAppServer;
 import com.slack.api.model.event.MessageEvent;
+import dev.fleetingclarity.wordlewarden.commands.groupstats.GroupStatsCommandHandler;
+import dev.fleetingclarity.wordlewarden.commands.groupstats.GroupStatsDao;
 import dev.fleetingclarity.wordlewarden.scores.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +28,11 @@ public class WordleWarden {
 
         final MessageEventHandler messageEventHandler = new MessageEventHandler(parser, slackClient, dao);
 
+        final CommandHandlerRegistry commandHandlerRegistry = new CommandHandlerRegistry();
+        final GroupStatsDao groupStatsDao = new GroupStatsDao(DatabaseConfig.getDataSource());
+        final GroupStatsCommandHandler groupStatsCommandHandler = new GroupStatsCommandHandler(groupStatsDao);
+        commandHandlerRegistry.register("group-stats", groupStatsCommandHandler);
+
         log.info("Scanning past messages...");
         scanner.scanChannel(targetChannelName);
 
@@ -35,6 +42,7 @@ public class WordleWarden {
         slack.config().setSigningSecret(signingSecret);
 
         slack.event(MessageEvent.class, messageEventHandler::handle);
+        slack.command("/ww", commandHandlerRegistry::handle);
 
         SlackAppServer server = new SlackAppServer(slack, 8888);
         server.start();

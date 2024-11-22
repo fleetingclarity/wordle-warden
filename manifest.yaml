@@ -8,7 +8,7 @@ settings:
     is_enabled: false
   event_subscriptions:
     # example request_url if using a cloudflared tunnel. The url must be registered manually in the slack app web console
-    request_url: https://broadband-florida-lounge-batch.trycloudflare.com/slack/verify
+    request_url: https://broadband-florida-lounge-batch.trycloudflare.com/slack/events
     bot_events:
       - message.channels
       - message.groups
@@ -20,6 +20,12 @@ features:
   bot_user:
     display_name: WordleWarden
     always_online: false
+  slash_commands:
+    - command: /ww
+      url: https://broadband-florida-lounge-batch.trycloudflare.com/slack/events
+      description: View wordle stats for your group
+      usage_hint: "[subcommand]"
+      should_escape: false
 oauth_config:
   scopes:
     bot:
@@ -36,3 +42,4 @@ oauth_config:
       - groups:history
       - groups:read
       - users:read
+      - commands
