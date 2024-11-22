@@ -17,6 +17,7 @@ public class UserSubmissionsCommandHandler implements CommandHandler {
         List<MonthlyUserSubmissions> submissions = dao.getMonthlySubmissionHistory();
 
         StringBuilder result = new StringBuilder("Monthly Submissions Report:\n\n```\n");
+        result.append(String.format("%-15s | %-15s | %-20s | %-15s\n", "User", "Month", "Submissions", "Difference"));
         result.append("-------------------------------------------------------------------------\n");
 
         for (MonthlyUserSubmissions s : submissions) {
