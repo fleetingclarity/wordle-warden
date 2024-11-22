@@ -5,7 +5,10 @@ import com.slack.api.bolt.jakarta_jetty.SlackAppServer;
 import com.slack.api.model.event.MessageEvent;
 import dev.fleetingclarity.wordlewarden.commands.groupstats.GroupStatsCommandHandler;
 import dev.fleetingclarity.wordlewarden.commands.groupstats.GroupStatsDao;
+import dev.fleetingclarity.wordlewarden.commands.submissions.UserSubmissionsCommandHandler;
+import dev.fleetingclarity.wordlewarden.commands.submissions.UserSubmissionsDao;
 import dev.fleetingclarity.wordlewarden.scores.*;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,10 +31,7 @@ public class WordleWarden {
 
         final MessageEventHandler messageEventHandler = new MessageEventHandler(parser, slackClient, dao);
 
-        final CommandHandlerRegistry commandHandlerRegistry = new CommandHandlerRegistry();
-        final GroupStatsDao groupStatsDao = new GroupStatsDao(DatabaseConfig.getDataSource());
-        final GroupStatsCommandHandler groupStatsCommandHandler = new GroupStatsCommandHandler(groupStatsDao);
-        commandHandlerRegistry.register("group-stats", groupStatsCommandHandler);
+        final CommandHandlerRegistry commandHandlerRegistry = getCommandHandlerRegistry();
 
         log.info("Scanning past messages...");
         scanner.scanChannel(targetChannelName);
@@ -46,5 +46,17 @@ public class WordleWarden {
 
         SlackAppServer server = new SlackAppServer(slack, 8888);
         server.start();
+    }
+
+    @NotNull
+    private static CommandHandlerRegistry getCommandHandlerRegistry() {
+        final CommandHandlerRegistry commandHandlerRegistry = new CommandHandlerRegistry();
+        final GroupStatsDao groupStatsDao = new GroupStatsDao(DatabaseConfig.getDataSource());
+        final GroupStatsCommandHandler groupStatsCommandHandler = new GroupStatsCommandHandler(groupStatsDao);
+        final UserSubmissionsDao userSubmissionsDao = new UserSubmissionsDao(DatabaseConfig.getDataSource());
+        final UserSubmissionsCommandHandler userSubmissionsCommandHandler = new UserSubmissionsCommandHandler(userSubmissionsDao);
+        commandHandlerRegistry.register("group-stats", groupStatsCommandHandler);
+        commandHandlerRegistry.register("submissions", userSubmissionsCommandHandler);
+        return commandHandlerRegistry;
     }
 }
