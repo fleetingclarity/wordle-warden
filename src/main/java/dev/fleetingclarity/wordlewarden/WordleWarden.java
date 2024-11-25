@@ -3,6 +3,9 @@ package dev.fleetingclarity.wordlewarden;
 import com.slack.api.bolt.App;
 import com.slack.api.bolt.jakarta_jetty.SlackAppServer;
 import com.slack.api.model.event.MessageEvent;
+import dev.fleetingclarity.wordlewarden.audit.AuditTrailDao;
+import dev.fleetingclarity.wordlewarden.audit.AuditTrailService;
+import dev.fleetingclarity.wordlewarden.audit.AuditTrailServiceFactory;
 import dev.fleetingclarity.wordlewarden.commands.groupstats.GroupStatsCommandHandler;
 import dev.fleetingclarity.wordlewarden.commands.groupstats.GroupStatsDao;
 import dev.fleetingclarity.wordlewarden.commands.submissions.UserSubmissionsCommandHandler;
@@ -31,7 +34,10 @@ public class WordleWarden {
 
         final MessageEventHandler messageEventHandler = new MessageEventHandler(parser, slackClient, dao);
 
-        final CommandHandlerRegistry commandHandlerRegistry = getCommandHandlerRegistry();
+        final AuditTrailDao auditTrailDao = new AuditTrailDao(DatabaseConfig.getDataSource());
+        final AuditTrailService auditTrailService = AuditTrailServiceFactory.create(auditTrailDao);
+
+        final CommandHandlerRegistry commandHandlerRegistry = getCommandHandlerRegistry(auditTrailService);
 
         log.info("Scanning past messages...");
         scanner.scanChannel(targetChannelName);
@@ -49,8 +55,8 @@ public class WordleWarden {
     }
 
     @NotNull
-    private static CommandHandlerRegistry getCommandHandlerRegistry() {
-        final CommandHandlerRegistry commandHandlerRegistry = new CommandHandlerRegistry();
+    private static CommandHandlerRegistry getCommandHandlerRegistry(final AuditTrailService auditTrailService) {
+        final CommandHandlerRegistry commandHandlerRegistry = new CommandHandlerRegistry(auditTrailService);
         final GroupStatsDao groupStatsDao = new GroupStatsDao(DatabaseConfig.getDataSource());
         final GroupStatsCommandHandler groupStatsCommandHandler = new GroupStatsCommandHandler(groupStatsDao);
         final UserSubmissionsDao userSubmissionsDao = new UserSubmissionsDao(DatabaseConfig.getDataSource());

@@ -24,7 +24,7 @@ features:
     - command: /ww
       url: https://broadband-florida-lounge-batch.trycloudflare.com/slack/events
       description: View wordle stats for your group
-      usage_hint: "[subcommand]"
+      usage_hint: "[subcommand] - Available subcommands: group-stats, submissions"
       should_escape: false
 oauth_config:
   scopes:

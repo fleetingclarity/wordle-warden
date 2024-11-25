@@ -36,10 +36,18 @@ public class EnvLoader {
     }
 
     public static String getEnvOrProperty(final String key) {
-        String value = System.getenv(key);
+        final String value = System.getenv(key);
         if (value != null) {
             return value;
         }
         return System.getProperty(key);
+    }
+
+    public static String getEnvOrProperty(final String key, final String defaultValue) {
+        final String value = getEnvOrProperty(key);
+        if (value == null) {
+            return defaultValue;
+        }
+        return value;
     }
 }
