@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class WordleSlackMessageParser {
-    private static final Pattern SCORE_PATTERN = Pattern.compile("Wordle ([\\d,]+) (\\d)/6");
+    private static final Pattern SCORE_PATTERN = Pattern.compile("Wordle ([\\d,]+) (\\d|[Xx])/6");
     private static final int failureScore = 7;
 
     public WordleScore parse(Message message) {
