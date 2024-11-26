@@ -41,23 +41,6 @@ public class SlackClient {
         return res.getChannels();
     }
 
-    public boolean joinChannel(final String channelId) throws IOException, SlackApiException {
-        ConversationsJoinResponse res = slack.methods(botToken)
-                .conversationsJoin(req -> req.channel(channelId));
-        if (!res.isOk()) {
-            throw new RuntimeException(String.format("Failed to join channel '%s': %s", channelId, res.getError()));
-        }
-        return res.isOk();
-    }
-
-    public List<Message> getChannelHistory(final String channelId) throws IOException, SlackApiException {
-        ConversationsHistoryResponse res = slack.methods(botToken).conversationsHistory(req -> req.channel(channelId));
-        if (!res.isOk()) {
-            throw new RuntimeException(String.format("Failed to get history for channel '%s': %s", channelId, res.getError()));
-        }
-        return res.getMessages();
-    }
-
     public List<Message> getAllChannelHistory(final String channelId) throws IOException, SlackApiException {
         final List<Message> allMessages = new ArrayList<>();
         final AtomicReference<String> nextCursor = new AtomicReference<>(null);
@@ -80,21 +63,6 @@ public class SlackClient {
         } while (nextCursor.get() != null && !nextCursor.get().isEmpty());
 
         return allMessages;
-    }
-
-    public String getUsernameById(final String userId) {
-        try {
-            UsersInfoResponse res = slack.methods(botToken).usersInfo(req -> req.user(userId));
-            if (res.isOk() && res.getUser() != null) {
-                return res.getUser().getRealName();
-            } else {
-                log.warn("Unable to find details of user '{}'", userId);
-                return "";
-            }
-        } catch (IOException | SlackApiException e) {
-            log.error("Error querying for userDetails of userId={}", userId, e);
-        }
-        return "";
     }
 
     public void setScoreUsername(final WordleScore score) {
