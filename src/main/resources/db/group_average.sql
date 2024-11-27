@@ -1,6 +1,6 @@
 WITH user_averages AS (
     SELECT user_name,
-           AVG(score) AS average_score_per_person
+           AVG(score) FILTER (WHERE score < 7) AS average_score_per_person
     FROM wordle_scores
     GROUP BY user_name
 ),
