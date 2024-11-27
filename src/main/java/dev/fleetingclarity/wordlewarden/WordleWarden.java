@@ -10,6 +10,8 @@ import dev.fleetingclarity.wordlewarden.commands.groupstats.GroupStatsCommandHan
 import dev.fleetingclarity.wordlewarden.commands.groupstats.GroupStatsDao;
 import dev.fleetingclarity.wordlewarden.commands.submissions.UserSubmissionsCommandHandler;
 import dev.fleetingclarity.wordlewarden.commands.submissions.UserSubmissionsDao;
+import dev.fleetingclarity.wordlewarden.commands.userstats.UserStatsCommandHandler;
+import dev.fleetingclarity.wordlewarden.commands.userstats.UserStatsDao;
 import dev.fleetingclarity.wordlewarden.scores.*;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -54,15 +56,17 @@ public class WordleWarden {
         server.start();
     }
 
-    @NotNull
     private static CommandHandlerRegistry getCommandHandlerRegistry(final AuditTrailService auditTrailService) {
         final CommandHandlerRegistry commandHandlerRegistry = new CommandHandlerRegistry(auditTrailService);
         final GroupStatsDao groupStatsDao = new GroupStatsDao(DatabaseConfig.getDataSource());
         final GroupStatsCommandHandler groupStatsCommandHandler = new GroupStatsCommandHandler(groupStatsDao);
         final UserSubmissionsDao userSubmissionsDao = new UserSubmissionsDao(DatabaseConfig.getDataSource());
         final UserSubmissionsCommandHandler userSubmissionsCommandHandler = new UserSubmissionsCommandHandler(userSubmissionsDao);
+        final UserStatsDao userStatsDao = new UserStatsDao(DatabaseConfig.getDataSource());
+        final UserStatsCommandHandler userStatsCommandHandler = new UserStatsCommandHandler(userStatsDao);
         commandHandlerRegistry.register("group-stats", groupStatsCommandHandler);
         commandHandlerRegistry.register("submissions", userSubmissionsCommandHandler);
+        commandHandlerRegistry.register("user-stats", userStatsCommandHandler);
         return commandHandlerRegistry;
     }
 }
